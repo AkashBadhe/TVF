@@ -1,13 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
-// Import our custom theme
-@use './themes/custom-theme.scss';
 
-// Global styles
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: mat.$yellow-palette,
+    typography: Roboto,
+    density: 0
+  ));
 }
 
 body {
@@ -16,6 +18,11 @@ body {
   padding: 0;
   background-color: var(--app-bg-primary);
   color: var(--app-text-primary);
+}
+
+body {
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
 }
 
 // Material Icons fallback
@@ -36,17 +43,3 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-// Global utility classes
-.text-primary { color: var(--app-text-primary) !important; }
-.text-secondary { color: var(--app-text-secondary) !important; }
-.text-muted { color: var(--app-text-muted) !important; }
-.text-light { color: var(--app-text-light) !important; }
-
-.bg-primary { background-color: var(--app-bg-primary) !important; }
-.bg-secondary { background-color: var(--app-bg-secondary) !important; }
-.bg-dark { background-color: var(--app-bg-dark) !important; }
-.bg-black { background-color: var(--app-bg-black) !important; }
-
-.border-light { border-color: var(--app-border-light) !important; }
-.border-medium { border-color: var(--app-border-medium) !important; }
-.border-dark { border-color: var(--app-border-dark) !important; }
