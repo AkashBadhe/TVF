@@ -1,126 +1,12 @@
-// Custom Material Theme for Restaurant App
-@use '@angular/material' as mat;
+// Simple Custom Theme for Restaurant App
+// Using only CSS variables instead of Angular Material theming functions
 
-// Define the color palette
-$app-primary-palette: (
-  50: #e8eaf6,
-  100: #c5cae9,
-  200: #9fa8da,
-  300: #7986cb,
-  400: #5c6bc0,
-  500: #14213D, // Navy Blue - Main primary
-  600: #101b33,
-  700: #0d1829,
-  800: #0a141f,
-  900: #070d15,
-  A100: #8c9eff,
-  A200: #536dfe,
-  A400: #3d5afe,
-  A700: #304ffe,
-  contrast: (
-    50: rgba(0, 0, 0, 0.87),
-    100: rgba(0, 0, 0, 0.87),
-    200: rgba(0, 0, 0, 0.87),
-    300: rgba(0, 0, 0, 0.87),
-    400: white,
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-    A100: rgba(0, 0, 0, 0.87),
-    A200: white,
-    A400: white,
-    A700: white,
-  )
-);
-
-$app-accent-palette: (
-  50: #fff8e1,
-  100: #ffecb3,
-  200: #ffe082,
-  300: #ffd54f,
-  400: #ffca28,
-  500: #FCA311, // Golden Yellow - Main accent
-  600: #ffb300,
-  700: #ffa000,
-  800: #ff8f00,
-  900: #ff6f00,
-  A100: #ffe57f,
-  A200: #ffd740,
-  A400: #ffc400,
-  A700: #ffab00,
-  contrast: (
-    50: rgba(0, 0, 0, 0.87),
-    100: rgba(0, 0, 0, 0.87),
-    200: rgba(0, 0, 0, 0.87),
-    300: rgba(0, 0, 0, 0.87),
-    400: rgba(0, 0, 0, 0.87),
-    500: rgba(0, 0, 0, 0.87),
-    600: rgba(0, 0, 0, 0.87),
-    700: rgba(0, 0, 0, 0.87),
-    800: rgba(0, 0, 0, 0.87),
-    900: rgba(0, 0, 0, 0.87),
-    A100: rgba(0, 0, 0, 0.87),
-    A200: rgba(0, 0, 0, 0.87),
-    A400: rgba(0, 0, 0, 0.87),
-    A700: rgba(0, 0, 0, 0.87),
-  )
-);
-
-$app-warn-palette: (
-  50: #ffebee,
-  100: #ffcdd2,
-  200: #ef9a9a,
-  300: #e57373,
-  400: #ef5350,
-  500: #f44336,
-  600: #e53935,
-  700: #d32f2f,
-  800: #c62828,
-  900: #b71c1c,
-  A100: #ff8a80,
-  A200: #ff5252,
-  A400: #ff1744,
-  A700: #d50000,
-  contrast: (
-    50: rgba(0, 0, 0, 0.87),
-    100: rgba(0, 0, 0, 0.87),
-    200: rgba(0, 0, 0, 0.87),
-    300: rgba(0, 0, 0, 0.87),
-    400: rgba(0, 0, 0, 0.87),
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-    A100: rgba(0, 0, 0, 0.87),
-    A200: white,
-    A400: white,
-    A700: white,
-  )
-);
-
-// Create the theme
-$app-primary: mat.define-palette($app-primary-palette);
-$app-accent: mat.define-palette($app-accent-palette);
-$app-warn: mat.define-palette($app-warn-palette);
-
-$app-theme: mat.define-light-theme((
-  color: (
-    primary: $app-primary,
-    accent: $app-accent,
-    warn: $app-warn,
-  ),
-  typography: mat.define-typography-config(),
-  density: 0,
-));
-
-// Apply the theme
-@include mat.all-component-themes($app-theme);
+// Material Icons font import
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 // Custom CSS variables for our color scheme
 :root {
+  // Primary colors from design
   --app-black: #000000;
   --app-navy: #14213D;
   --app-gold: #FCA311;
@@ -142,10 +28,12 @@ $app-theme: mat.define-light-theme((
   --app-info: #2196f3;
   
   // Text colors
-  --app-text-primary: #000000;
-  --app-text-secondary: #14213D;
-  --app-text-muted: #666666;
-  --app-text-light: #ffffff;
+  --primary-text: #000000;
+  --secondary-text: #14213D;
+  --primary-color: #14213D;
+  --accent-color: #FCA311;
+  --background-color: #ffffff;
+  --divider-color: #E5E5E5;
   
   // Background colors
   --app-bg-primary: #ffffff;
@@ -162,4 +50,72 @@ $app-theme: mat.define-light-theme((
   --app-shadow-light: rgba(20, 33, 61, 0.1);
   --app-shadow-medium: rgba(20, 33, 61, 0.2);
   --app-shadow-heavy: rgba(20, 33, 61, 0.3);
+}
+
+// Override Material Design color variables
+:root {
+  --mdc-theme-primary: #14213D;
+  --mdc-theme-secondary: #FCA311;
+  --mdc-theme-error: #f44336;
+  --mdc-theme-surface: #ffffff;
+  --mdc-theme-on-primary: #ffffff;
+  --mdc-theme-on-secondary: #000000;
+  --mdc-theme-on-surface: #000000;
+  --mdc-theme-on-error: #ffffff;
+}
+
+// Material Component overrides
+.mat-primary {
+  background-color: var(--app-navy) !important;
+  color: var(--app-white) !important;
+}
+
+.mat-accent {
+  background-color: var(--app-gold) !important;
+  color: var(--app-black) !important;
+}
+
+.mat-toolbar.mat-primary {
+  background-color: var(--app-navy) !important;
+  color: var(--app-white) !important;
+}
+
+.mat-raised-button.mat-primary {
+  background-color: var(--app-navy) !important;
+  color: var(--app-white) !important;
+}
+
+.mat-raised-button.mat-accent {
+  background-color: var(--app-gold) !important;
+  color: var(--app-black) !important;
+}
+
+.mat-button.mat-primary {
+  color: var(--app-navy) !important;
+}
+
+.mat-stroked-button.mat-primary {
+  color: var(--app-navy) !important;
+  border-color: var(--app-navy) !important;
+}
+
+.mat-form-field.mat-accent .mat-form-field-ripple {
+  background-color: var(--app-gold) !important;
+}
+
+.mat-form-field.mat-accent .mat-form-field-label {
+  color: var(--app-navy) !important;
+}
+
+.mat-checkbox-checked .mat-checkbox-background {
+  background-color: var(--app-navy) !important;
+}
+
+.mat-progress-spinner circle {
+  stroke: var(--app-navy) !important;
+}
+
+.mat-card {
+  background-color: var(--app-white) !important;
+  color: var(--app-black) !important;
 }

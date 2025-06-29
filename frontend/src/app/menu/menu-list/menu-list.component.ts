@@ -131,12 +131,14 @@ export class MenuListComponent implements OnInit {
     this.menuService.getMenuItems().subscribe({
       next: (response) => {
         if (response.success) {
-          this.menuItems.set(response.data.data);
+          this.menuItems.set(response.data.items);
           // Update price range based on actual menu items
-          const prices = response.data.data.map(item => item.price);
-          const minPrice = Math.min(...prices);
-          const maxPrice = Math.max(...prices);
-          this.priceRange.set({ min: minPrice, max: maxPrice });
+          const prices = response.data.items.map((item: MenuItem) => item.price);
+          if (prices.length > 0) {
+            const minPrice = Math.min(...prices);
+            const maxPrice = Math.max(...prices);
+            this.priceRange.set({ min: minPrice, max: maxPrice });
+          }
         }
         this.loading.set(false);
       },
@@ -179,15 +181,22 @@ export class MenuListComponent implements OnInit {
     this.isVegan.set(false);
     this.isGlutenFree.set(false);
     this.selectedSpiceLevel.set('');
-    const prices = this.menuItems().map(item => item.price);
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
-    this.priceRange.set({ min: minPrice, max: maxPrice });
+    const items = this.menuItems();
+    if (items.length > 0) {
+      const prices = items.map((item: MenuItem) => item.price);
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+      this.priceRange.set({ min: minPrice, max: maxPrice });
+    }
   }
 
   getCategoryName(categoryId: string): string {
     const category = this.categories().find(c => c.id === categoryId);
     return category?.name || 'Unknown Category';
+  }
+
+  getCategoryIdFromItem(item: MenuItem): string {
+    return typeof item.category === 'string' ? item.category : item.category.id;
   }
 
   getSpiceLevelIcon(level: string): string {

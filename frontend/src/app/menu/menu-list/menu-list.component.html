@@ -80,10 +80,12 @@
       </div>
 
       <!-- Clear Filters -->
-      <button mat-stroked-button color="primary" (click)="clearFilters()">
-        <mat-icon>clear</mat-icon>
-        Clear Filters
-      </button>
+      <div class="clear-filters-section">
+        <button mat-stroked-button color="primary" (click)="clearFilters()">
+          <mat-icon>clear</mat-icon>
+          Clear Filters
+        </button>
+      </div>
     </div>
 
     <!-- Results Count -->
@@ -124,7 +126,7 @@
         <mat-card-header>
           <mat-card-title>{{ item.name }}</mat-card-title>
           <mat-card-subtitle>
-            {{ getCategoryName(typeof item.category === 'string' ? item.category : item.category.id) }}
+            {{ getCategoryName(getCategoryIdFromItem(item)) }}
           </mat-card-subtitle>
         </mat-card-header>
 
