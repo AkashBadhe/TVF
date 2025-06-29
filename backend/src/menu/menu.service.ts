@@ -109,6 +109,42 @@ export class MenuService {
     return menuItem.save();
   }
 
+  async createMultipleMenuItems(createMenuItemDtos: CreateMenuItemDto[]): Promise<{
+    created: number;
+    failed: number;
+    items: MenuItem[];
+    errors: any[];
+  }> {
+    const results = {
+      created: 0,
+      failed: 0,
+      items: [] as MenuItem[],
+      errors: [] as any[],
+    };
+
+    for (let i = 0; i < createMenuItemDtos.length; i++) {
+      try {
+        // Validate category exists for each item
+        await this.getCategoryById(createMenuItemDtos[i].categoryId);
+        
+        const menuItem = new this.menuItemModel(createMenuItemDtos[i]);
+        const savedItem = await menuItem.save();
+        
+        results.items.push(savedItem);
+        results.created++;
+      } catch (error) {
+        results.failed++;
+        results.errors.push({
+          index: i,
+          item: createMenuItemDtos[i],
+          error: error.message || 'Unknown error',
+        });
+      }
+    }
+
+    return results;
+  }
+
   async getAllMenuItems(query: MenuQueryDto): Promise<{
     items: MenuItem[];
     total: number;

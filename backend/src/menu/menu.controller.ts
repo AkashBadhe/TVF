@@ -24,6 +24,7 @@ import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CreateMultipleMenuItemsDto } from './dto/create-multiple-menu-items.dto';
 import { MenuQueryDto } from './dto/menu-query.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AdminGuard } from '../auth/guards/admin.guard';
@@ -139,6 +140,37 @@ export class MenuController {
     return {
       success: true,
       data: menuItem,
+    };
+  }
+
+  @Post('bulk')
+  @ApiOperation({ summary: 'Create multiple menu items at once (Admin only)' })
+  @ApiResponse({ 
+    status: 201, 
+    description: 'Menu items created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean' },
+        data: {
+          type: 'object',
+          properties: {
+            created: { type: 'number' },
+            failed: { type: 'number' },
+            items: { type: 'array' },
+            errors: { type: 'array' }
+          }
+        }
+      }
+    }
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  async createMultipleMenuItems(@Body() createMultipleMenuItemsDto: CreateMultipleMenuItemsDto) {
+    const result = await this.menuService.createMultipleMenuItems(createMultipleMenuItemsDto.items);
+    return {
+      success: true,
+      data: result,
     };
   }
 
