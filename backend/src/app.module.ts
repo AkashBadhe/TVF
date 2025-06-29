@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { MenuModule } from './menu/menu.module';
 import { AuthModule } from './auth/auth.module';
 import { CustomersModule } from './customers/customers.module';
+import { CartModule } from './cart/cart.module';
 import appConfig from './config/app.config';
 
 @Module({
@@ -29,6 +30,7 @@ import appConfig from './config/app.config';
     AuthModule,
     CustomersModule,
     MenuModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],
