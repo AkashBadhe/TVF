@@ -86,3 +86,18 @@ export class Restaurant {
 }
 
 export const RestaurantSchema = SchemaFactory.createForClass(Restaurant);
+
+// Add virtual id field
+RestaurantSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialized
+RestaurantSchema.set('toJSON', {
+  virtuals: true,
+  transform: function(doc, ret) {
+    delete ret._id;
+    delete ret.__v;
+    return ret;
+  },
+});
