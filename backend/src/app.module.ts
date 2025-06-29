@@ -9,6 +9,7 @@ import { CustomersModule } from './customers/customers.module';
 import { CartModule } from './cart/cart.module';
 import { OrdersModule } from './orders/orders.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { UploadModule } from './upload/upload.module';
 import appConfig from './config/app.config';
 
 @Module({
@@ -35,6 +36,7 @@ import appConfig from './config/app.config';
     CartModule,
     OrdersModule,
     RestaurantModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
