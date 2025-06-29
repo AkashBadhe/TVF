@@ -1,0 +1,71 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <span class="logo" routerLink="/">{{ title }}</span>
+  
+  <div class="spacer"></div>
+  
+  <div class="nav-links">
+    <button mat-button routerLink="/menu">Menu</button>
+    
+    <ng-container *ngIf="currentUser$ | async as user; else guestMenu">
+      <!-- Customer Menu -->
+      <ng-container *ngIf="user.role === 'customer'">
+        <button 
+          mat-icon-button 
+          [matBadge]="cartItemCount" 
+          [matBadgeHidden]="cartItemCount === 0"
+          matBadgeColor="accent"
+          (click)="navigateToCart()"
+          matTooltip="Shopping Cart">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+        
+        <button mat-button (click)="navigateToOrders()">My Orders</button>
+        
+        <button mat-icon-button [matMenuTriggerFor]="userMenu" matTooltip="User Menu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="navigateToProfile()">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </ng-container>
+      
+      <!-- Admin Menu -->
+      <ng-container *ngIf="user.role === 'admin'">
+        <button mat-button (click)="navigateToAdmin()">Dashboard</button>
+        
+        <button mat-icon-button [matMenuTriggerFor]="adminMenu" matTooltip="Admin Menu">
+          <mat-icon>admin_panel_settings</mat-icon>
+        </button>
+        
+        <mat-menu #adminMenu="matMenu">
+          <button mat-menu-item (click)="navigateToProfile()">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </ng-container>
+    </ng-container>
+    
+    <!-- Guest Menu -->
+    <ng-template #guestMenu>
+      <button mat-button (click)="navigateToLogin()">Login</button>
+      <button mat-raised-button color="accent" (click)="navigateToRegister()">Sign Up</button>
+    </ng-template>
+  </div>
+</mat-toolbar>
+
+<main class="app-content">
+  <router-outlet></router-outlet>
+</main>
