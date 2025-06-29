@@ -113,3 +113,18 @@ export class Order {
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
+
+// Add virtual id field
+OrderSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialized
+OrderSchema.set('toJSON', {
+  virtuals: true,
+  transform: function(doc, ret) {
+    delete ret._id;
+    delete ret.__v;
+    return ret;
+  },
+});
