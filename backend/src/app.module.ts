@@ -4,6 +4,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MenuModule } from './menu/menu.module';
+import { AuthModule } from './auth/auth.module';
+import { CustomersModule } from './customers/customers.module';
+import appConfig from './config/app.config';
 
 @Module({
   imports: [
@@ -11,6 +14,7 @@ import { MenuModule } from './menu/menu.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+      load: [appConfig],
     }),
 
     // MongoDB connection
@@ -22,6 +26,8 @@ import { MenuModule } from './menu/menu.module';
     }),
 
     // Feature modules
+    AuthModule,
+    CustomersModule,
     MenuModule,
   ],
   controllers: [AppController],

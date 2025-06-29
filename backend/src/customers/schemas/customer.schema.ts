@@ -77,3 +77,18 @@ export class Customer {
 }
 
 export const CustomerSchema = SchemaFactory.createForClass(Customer);
+
+// Add virtual id field
+CustomerSchema.virtual('id').get(function (this: CustomerDocument) {
+  return (this._id as any).toHexString();
+});
+
+// Ensure virtual fields are serialized
+CustomerSchema.set('toJSON', {
+  virtuals: true,
+  transform: function (doc, ret) {
+    delete ret._id;
+    delete ret.__v;
+    return ret;
+  },
+});

@@ -72,3 +72,18 @@ export class MenuItem {
 }
 
 export const MenuItemSchema = SchemaFactory.createForClass(MenuItem);
+
+// Add virtual id field
+MenuItemSchema.virtual('id').get(function (this: MenuItemDocument) {
+  return (this._id as any).toHexString();
+});
+
+// Ensure virtual fields are serialized
+MenuItemSchema.set('toJSON', {
+  virtuals: true,
+  transform: function (doc, ret) {
+    delete ret._id;
+    delete ret.__v;
+    return ret;
+  },
+});

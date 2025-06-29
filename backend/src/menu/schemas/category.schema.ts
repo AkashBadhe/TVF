@@ -22,3 +22,18 @@ export class Category {
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
+
+// Add virtual id field
+CategorySchema.virtual('id').get(function (this: CategoryDocument) {
+  return (this._id as any).toHexString();
+});
+
+// Ensure virtual fields are serialized
+CategorySchema.set('toJSON', {
+  virtuals: true,
+  transform: function (doc, ret) {
+    delete ret._id;
+    delete ret.__v;
+    return ret;
+  },
+});

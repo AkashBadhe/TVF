@@ -25,6 +25,8 @@ import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { MenuQueryDto } from './dto/menu-query.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AdminGuard } from '../auth/guards/admin.guard';
 
 @ApiTags('Menu')
 @Controller('menu')
@@ -50,7 +52,7 @@ export class MenuController {
   @ApiOperation({ summary: 'Create a new category (Admin only)' })
   @ApiResponse({ status: 201, description: 'Category created successfully' })
   @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard, AdminGuard) // TODO: Implement guards
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
     const category = await this.menuService.createCategory(createCategoryDto);
     return {
@@ -77,7 +79,7 @@ export class MenuController {
   @ApiParam({ name: 'id', description: 'Category ID' })
   @ApiResponse({ status: 200, description: 'Category updated successfully' })
   @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard, AdminGuard) // TODO: Implement guards
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async updateCategory(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -95,7 +97,7 @@ export class MenuController {
   @ApiResponse({ status: 204, description: 'Category deleted successfully' })
   @ApiBearerAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
-  // @UseGuards(JwtAuthGuard, AdminGuard) // TODO: Implement guards
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async deleteCategory(@Param('id') id: string) {
     await this.menuService.deleteCategory(id);
   }
@@ -131,7 +133,7 @@ export class MenuController {
   @ApiOperation({ summary: 'Create a new menu item (Admin only)' })
   @ApiResponse({ status: 201, description: 'Menu item created successfully' })
   @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard, AdminGuard) // TODO: Implement guards
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async createMenuItem(@Body() createMenuItemDto: CreateMenuItemDto) {
     const menuItem = await this.menuService.createMenuItem(createMenuItemDto);
     return {
@@ -194,7 +196,7 @@ export class MenuController {
   @ApiParam({ name: 'id', description: 'Menu item ID' })
   @ApiResponse({ status: 200, description: 'Menu item updated successfully' })
   @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard, AdminGuard) // TODO: Implement guards
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async updateMenuItem(
     @Param('id') id: string,
     @Body() updateMenuItemDto: UpdateMenuItemDto,
@@ -211,7 +213,7 @@ export class MenuController {
   @ApiParam({ name: 'id', description: 'Menu item ID' })
   @ApiResponse({ status: 200, description: 'Availability toggled successfully' })
   @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard, AdminGuard) // TODO: Implement guards
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async toggleAvailability(@Param('id') id: string) {
     const menuItem = await this.menuService.toggleMenuItemAvailability(id);
     return {
@@ -226,7 +228,7 @@ export class MenuController {
   @ApiResponse({ status: 204, description: 'Menu item deleted successfully' })
   @ApiBearerAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
-  // @UseGuards(JwtAuthGuard, AdminGuard) // TODO: Implement guards
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async deleteMenuItem(@Param('id') id: string) {
     await this.menuService.deleteMenuItem(id);
   }
