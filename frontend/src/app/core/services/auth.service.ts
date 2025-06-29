@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { 
   User, 
+  Customer,
   LoginRequest, 
   RegisterRequest, 
   AuthResponse,
@@ -25,41 +26,76 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {}
+  ) {
+    // Clear any corrupted localStorage data on initialization
+    this.clearCorruptedStorage();
+  }
+
+  private clearCorruptedStorage(): void {
+    try {
+      const tokenStr = localStorage.getItem(this.TOKEN_KEY);
+      const userStr = localStorage.getItem(this.USER_KEY);
+      
+      // Test if user data is valid JSON
+      if (userStr && userStr !== 'undefined' && userStr !== 'null') {
+        JSON.parse(userStr);
+      }
+    } catch (error) {
+      console.warn('Clearing corrupted localStorage data');
+      localStorage.removeItem(this.TOKEN_KEY);
+      localStorage.removeItem(this.USER_KEY);
+    }
+  }
 
   private getUserFromStorage(): User | null {
-    const userStr = localStorage.getItem(this.USER_KEY);
-    return userStr ? JSON.parse(userStr) : null;
+    try {
+      const userStr = localStorage.getItem(this.USER_KEY);
+      if (!userStr || userStr === 'undefined' || userStr === 'null') {
+        return null;
+      }
+      return JSON.parse(userStr);
+    } catch (error) {
+      console.warn('Error parsing user data from localStorage:', error);
+      // Clear invalid data
+      localStorage.removeItem(this.USER_KEY);
+      return null;
+    }
   }
 
-  register(data: RegisterRequest): Observable<ApiResponse<AuthResponse>> {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/register`, data)
+  register(data: RegisterRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, data)
       .pipe(
         tap(response => {
           if (response.success) {
-            this.setSession(response.data);
+            // Set role as customer for registration
+            const customerWithRole = { ...response.data.customer, role: 'customer' as const };
+            this.setSession({ token: response.data.token, customer: customerWithRole });
           }
         })
       );
   }
 
-  login(data: LoginRequest): Observable<ApiResponse<AuthResponse>> {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/login`, data)
+  login(data: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, data)
       .pipe(
         tap(response => {
           if (response.success) {
-            this.setSession(response.data);
+            // Set role as customer for regular login
+            const customerWithRole = { ...response.data.customer, role: 'customer' as const };
+            this.setSession({ token: response.data.token, customer: customerWithRole });
           }
         })
       );
   }
 
-  adminLogin(data: LoginRequest): Observable<ApiResponse<AuthResponse>> {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/admin-login`, data)
+  adminLogin(data: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/admin-login`, data)
       .pipe(
         tap(response => {
           if (response.success) {
-            this.setSession(response.data);
+            // Set role as admin for admin login
+            const adminWithRole = { ...response.data.customer, role: 'admin' as const };
+            this.setSession({ token: response.data.token, customer: adminWithRole });
           }
         })
       );
@@ -94,10 +130,10 @@ export class AuthService {
     return user?.role === 'customer';
   }
 
-  private setSession(authResult: AuthResponse): void {
-    localStorage.setItem(this.TOKEN_KEY, authResult.access_token);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(authResult.user));
-    this.currentUserSubject.next(authResult.user);
+  private setSession(authData: { token: string; customer: User }): void {
+    localStorage.setItem(this.TOKEN_KEY, authData.token);
+    localStorage.setItem(this.USER_KEY, JSON.stringify(authData.customer));
+    this.currentUserSubject.next(authData.customer);
   }
 
   refreshUserData(): Observable<ApiResponse<User>> {

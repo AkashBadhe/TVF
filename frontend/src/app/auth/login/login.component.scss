@@ -4,16 +4,17 @@
   align-items: center;
   min-height: calc(100vh - 64px);
   padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--app-navy) 0%, var(--app-navy-dark) 100%);
 }
 
 .auth-card {
   width: 100%;
   max-width: 400px;
   padding: 2rem;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px var(--app-shadow-heavy);
   border-radius: 12px;
-  background-color: white;
+  background-color: var(--app-white);
+  border-top: 4px solid var(--app-gold);
 }
 
 .full-width {
@@ -27,6 +28,12 @@
   margin-bottom: 1rem;
   font-size: 1rem;
   border-radius: 8px;
+  background-color: var(--app-gold);
+  color: var(--app-black);
+  
+  &:hover:not(:disabled) {
+    background-color: var(--app-gold-dark);
+  }
 }
 
 .auth-links {

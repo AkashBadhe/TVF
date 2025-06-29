@@ -1,21 +1,39 @@
 // User Models
 export interface User {
-  id: string;
+  _id: string;
   email: string;
   name: string;
-  role: 'customer' | 'admin';
   phone?: string;
-  address?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  role?: 'customer' | 'admin'; // Added for frontend role management
+  isActive: boolean;
+  isEmailVerified: boolean;
+  addresses: Array<{
+    _id?: string;
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+    isDefault: boolean;
+  }>;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 export interface Customer extends User {
-  role: 'customer';
-  orderHistory?: string[];
-  preferences?: {
-    favoriteItems?: string[];
-    dietaryRestrictions?: string[];
+  preferences: {
+    notifications: {
+      email: boolean;
+      sms: boolean;
+    };
+    dietary: {
+      vegetarian: boolean;
+      vegan: boolean;
+      glutenFree: boolean;
+      allergies: string[];
+    };
+    _id: string;
   };
 }
 
@@ -34,8 +52,11 @@ export interface RegisterRequest {
 }
 
 export interface AuthResponse {
-  access_token: string;
-  user: User;
+  success: boolean;
+  data: {
+    token: string;
+    customer: Customer;
+  };
 }
 
 // Menu Models

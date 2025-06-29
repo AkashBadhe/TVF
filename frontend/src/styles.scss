@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
-// Material Theme
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+// Import our custom theme
+@import './themes/custom-theme.scss';
 
 // Global styles
 * {
@@ -14,6 +14,8 @@ body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
+  background-color: var(--app-bg-primary);
+  color: var(--app-text-primary);
 }
 
 // Material Icons fallback
@@ -33,3 +35,18 @@ body {
   font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+
+// Global utility classes
+.text-primary { color: var(--app-text-primary) !important; }
+.text-secondary { color: var(--app-text-secondary) !important; }
+.text-muted { color: var(--app-text-muted) !important; }
+.text-light { color: var(--app-text-light) !important; }
+
+.bg-primary { background-color: var(--app-bg-primary) !important; }
+.bg-secondary { background-color: var(--app-bg-secondary) !important; }
+.bg-dark { background-color: var(--app-bg-dark) !important; }
+.bg-black { background-color: var(--app-bg-black) !important; }
+
+.border-light { border-color: var(--app-border-light) !important; }
+.border-medium { border-color: var(--app-border-medium) !important; }
+.border-dark { border-color: var(--app-border-dark) !important; }

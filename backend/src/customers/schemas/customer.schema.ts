@@ -17,6 +17,9 @@ export class Customer {
   @Prop({ required: true })
   password: string;
 
+  @Prop({ required: false, trim: true })
+  address?: string;
+
   @Prop({ default: true })
   isActive: boolean;
 

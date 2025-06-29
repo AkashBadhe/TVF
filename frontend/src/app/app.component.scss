@@ -4,9 +4,9 @@
   left: 0;
   right: 0;
   z-index: 99999;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #000000 !important;
-  color: #ffffff !important;
+  box-shadow: 0 2px 8px var(--app-shadow-medium);
+  background-color: var(--app-black) !important;
+  color: var(--app-white) !important;
 }
 
 .logo {
@@ -33,7 +33,7 @@
 
 .app-content {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--app-bg-secondary);
   padding-top: 64px;
 }
 
