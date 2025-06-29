@@ -1,0 +1,236 @@
+<div class="menu-item-detail-container">
+  <!-- Loading State -->
+  <div *ngIf="loading()" class="loading-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <p>Loading menu item...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error()" class="error-container">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Menu
+    </button>
+  </div>
+
+  <!-- Menu Item Details -->
+  <div *ngIf="!loading() && !error() && menuItem()" class="menu-item-content">
+    <!-- Header with Back Button -->
+    <div class="header-actions">
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Menu Item Details</h1>
+    </div>
+
+    <div class="detail-layout">
+      <!-- Image Section -->
+      <div class="image-section">
+        <img [src]="menuItem()!.image || '/assets/images/placeholder-food.jpg'" 
+             [alt]="menuItem()!.name"
+             class="item-image">
+        
+        <!-- Dietary Badges -->
+        <div class="dietary-badges">
+          <mat-chip-set>
+            <mat-chip *ngIf="menuItem()!.isVegetarian" class="vegetarian-chip">
+              <mat-icon>eco</mat-icon>
+              Vegetarian
+            </mat-chip>
+            <mat-chip *ngIf="menuItem()!.isVegan" class="vegan-chip">
+              <mat-icon>local_florist</mat-icon>
+              Vegan
+            </mat-chip>
+            <mat-chip *ngIf="menuItem()!.isGlutenFree" class="gluten-free-chip">
+              <mat-icon>grain</mat-icon>
+              Gluten-Free
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+      </div>
+
+      <!-- Details Section -->
+      <div class="details-section">
+        <mat-card class="item-details-card">
+          <!-- Basic Info -->
+          <mat-card-header>
+            <mat-card-title>{{ menuItem()!.name }}</mat-card-title>
+            <mat-card-subtitle>
+              <div class="subtitle-content">
+                <span class="price">${{ menuItem()!.price | number:'1.2-2' }}</span>
+                <span class="availability" [class.unavailable]="!menuItem()!.isAvailable">
+                  {{ menuItem()!.isAvailable ? 'Available' : 'Unavailable' }}
+                </span>
+              </div>
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <!-- Description -->
+            <div class="description-section">
+              <p>{{ menuItem()!.description }}</p>
+            </div>
+
+            <!-- Quick Info -->
+            <div class="quick-info">
+              <div class="info-item">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ menuItem()!.preparationTime }} minutes</span>
+              </div>
+              <div class="info-item" *ngIf="menuItem()!.spiceLevel !== 'none'">
+                <span>{{ getSpiceLevelIcon(menuItem()!.spiceLevel) }}</span>
+                <span>{{ menuItem()!.spiceLevel | titlecase }}</span>
+              </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- Detailed Information -->
+            <mat-accordion class="details-accordion">
+              <!-- Ingredients -->
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon>list</mat-icon>
+                    Ingredients
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="ingredients-list">
+                  <mat-chip-set>
+                    <mat-chip *ngFor="let ingredient of menuItem()!.ingredients">
+                      {{ ingredient }}
+                    </mat-chip>
+                  </mat-chip-set>
+                </div>
+              </mat-expansion-panel>
+
+              <!-- Allergens -->
+              <mat-expansion-panel *ngIf="menuItem()!.allergens?.length">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon color="warn">warning</mat-icon>
+                    Allergens
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="allergens-list">
+                  <mat-chip-set>
+                    <mat-chip *ngFor="let allergen of menuItem()!.allergens" class="allergen-chip">
+                      {{ allergen }}
+                    </mat-chip>
+                  </mat-chip-set>
+                </div>
+              </mat-expansion-panel>
+
+              <!-- Nutritional Information -->
+              <mat-expansion-panel *ngIf="menuItem()!.nutritionalInfo">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon>fitness_center</mat-icon>
+                    Nutritional Information
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="nutrition-grid">
+                  <div class="nutrition-item" *ngIf="menuItem()!.nutritionalInfo?.calories">
+                    <span class="label">Calories:</span>
+                    <span class="value">{{ menuItem()!.nutritionalInfo!.calories }}</span>
+                  </div>
+                  <div class="nutrition-item" *ngIf="menuItem()!.nutritionalInfo?.protein">
+                    <span class="label">Protein:</span>
+                    <span class="value">{{ menuItem()!.nutritionalInfo!.protein }}g</span>
+                  </div>
+                  <div class="nutrition-item" *ngIf="menuItem()!.nutritionalInfo?.carbs">
+                    <span class="label">Carbs:</span>
+                    <span class="value">{{ menuItem()!.nutritionalInfo!.carbs }}g</span>
+                  </div>
+                  <div class="nutrition-item" *ngIf="menuItem()!.nutritionalInfo?.fat">
+                    <span class="label">Fat:</span>
+                    <span class="value">{{ menuItem()!.nutritionalInfo!.fat }}g</span>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+
+            <mat-divider></mat-divider>
+
+            <!-- Customizations -->
+            <div class="customizations-section" *ngIf="menuItem()!.customizations?.length">
+              <h3>Customize Your Order</h3>
+              <div class="customization" *ngFor="let customization of menuItem()!.customizations">
+                <h4>{{ customization.name }} 
+                  <span class="required" *ngIf="customization.required">(Required)</span>
+                </h4>
+                <div class="options">
+                  <mat-checkbox 
+                    *ngFor="let option of customization.options"
+                    [checked]="isCustomizationSelected(customization.name, option.name)"
+                    (change)="onCustomizationChange(customization.name, option.name, $event.checked)">
+                    {{ option.name }}
+                    <span class="option-price" *ngIf="option.price > 0">
+                      (+${{ option.price | number:'1.2-2' }})
+                    </span>
+                  </mat-checkbox>
+                </div>
+              </div>
+            </div>
+
+            <!-- Special Instructions -->
+            <div class="special-instructions">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Special Instructions</mat-label>
+                <textarea matInput 
+                          rows="3"
+                          [value]="specialInstructions()"
+                          (input)="specialInstructions.set($any($event.target).value)"
+                          placeholder="Any special requests or dietary requirements..."></textarea>
+              </mat-form-field>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- Quantity and Total -->
+            <div class="order-section">
+              <div class="quantity-controls">
+                <h4>Quantity</h4>
+                <div class="quantity-selector">
+                  <button mat-icon-button 
+                          [disabled]="quantity() <= 1"
+                          (click)="decreaseQuantity()">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <span class="quantity-display">{{ quantity() }}</span>
+                  <button mat-icon-button (click)="increaseQuantity()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <div class="total-section">
+                <div class="total-display">
+                  <span class="total-label">Total:</span>
+                  <span class="total-amount">${{ calculateTotal() | number:'1.2-2' }}</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions class="action-buttons">
+            <button mat-stroked-button color="primary" (click)="goBack()">
+              <mat-icon>arrow_back</mat-icon>
+              Back to Menu
+            </button>
+            <button mat-raised-button 
+                    color="primary" 
+                    [disabled]="!menuItem()!.isAvailable"
+                    (click)="addToCart()"
+                    class="add-to-cart-btn">
+              <mat-icon>add_shopping_cart</mat-icon>
+              Add to Cart - ${{ calculateTotal() | number:'1.2-2' }}
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

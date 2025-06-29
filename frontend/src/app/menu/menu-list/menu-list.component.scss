@@ -1,0 +1,290 @@
+.menu-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin: 1rem 0;
+    color: var(--primary-text);
+  }
+}
+
+.menu-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--secondary-text);
+    font-size: 1.1rem;
+  }
+}
+
+.filters-section {
+  background: var(--background-color);
+  border: 1px solid var(--divider-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+  }
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filter-field {
+  width: 100%;
+}
+
+.dietary-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+
+  mat-checkbox {
+    ::ng-deep .mat-checkbox-label {
+      color: var(--primary-text);
+    }
+  }
+}
+
+.results-info {
+  margin-bottom: 1rem;
+  
+  p {
+    color: var(--secondary-text);
+    font-weight: 500;
+  }
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.menu-item-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.item-image-container {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dietary-badges {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  mat-chip-set {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  mat-chip {
+    font-size: 0.75rem;
+    min-height: 24px;
+    border-radius: 12px;
+    
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .vegetarian-chip {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .vegan-chip {
+    background-color: #8bc34a;
+    color: white;
+  }
+
+  .gluten-free-chip {
+    background-color: #ff9800;
+    color: white;
+  }
+}
+
+mat-card-header {
+  mat-card-title {
+    color: var(--primary-text);
+    font-weight: 600;
+  }
+
+  mat-card-subtitle {
+    color: var(--accent-color);
+    font-weight: 500;
+  }
+}
+
+.item-description {
+  color: var(--secondary-text);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-details {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--secondary-text);
+  font-size: 0.9rem;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.price-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.availability {
+  font-size: 0.9rem;
+  color: #4caf50;
+  font-weight: 500;
+
+  &.unavailable {
+    color: #f44336;
+  }
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 1rem;
+
+  button {
+    flex: 1;
+
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  color: var(--secondary-text);
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  h3 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-text);
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .menu-container {
+    padding: 1rem;
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dietary-filters {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  mat-card-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}

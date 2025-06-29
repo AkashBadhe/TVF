@@ -9,7 +9,7 @@ export const routes: Routes = [
   },
   {
     path: 'menu',
-    loadComponent: () => import('./shared/components/simple-menu/simple-menu.component').then(c => c.SimpleMenuComponent)
+    loadChildren: () => import('./menu/menu.routes').then(m => m.menuRoutes)
   },
   {
     path: 'auth',
