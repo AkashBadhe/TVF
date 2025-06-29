@@ -61,6 +61,12 @@ mat-spinner {
   margin-right: 8px;
 }
 
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
 textarea {
   resize: vertical;
   min-height: 50px;

@@ -60,3 +60,9 @@ mat-card-header {
 mat-spinner {
   margin-right: 8px;
 }
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
