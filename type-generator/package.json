@@ -2,24 +2,21 @@
   "name": "@tvf/api-client",
   "version": "1.0.0",
   "description": "Auto-generated TypeScript types and API client for TVF Restaurant API",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "module": "dist/index.esm.js",
+  "main": "dist/generated-client/index.js",
+  "types": "dist/generated-client/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./client": {
-      "import": "./dist/client.esm.js",
-      "require": "./dist/client.js",
-      "types": "./dist/client.d.ts"
+      "types": "./dist/generated-client/index.d.ts",
+      "require": "./dist/generated-client/index.js",
+      "import": "./dist/generated-client/index.js"
     },
     "./types": {
-      "import": "./dist/types.esm.js",
-      "require": "./dist/types.js",
       "types": "./dist/types.d.ts"
+    },
+    "./client": {
+      "types": "./dist/generated-client/index.d.ts",
+      "require": "./dist/generated-client/index.js",
+      "import": "./dist/generated-client/index.js"
     }
   },
   "keywords": [
@@ -30,16 +27,20 @@
     "tvf",
     "types"
   ],
-  "author": "TVF Restaurant Team",
+  "author": {
+    "name": "Akash Badhe",
+    "email": "askext@gmail.com",
+    "url": "https://github.com/AkashBadhe"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tvf-restaurant/api-client.git"
+    "url": "https://github.com/AkashBadhe/TVF.git"
   },
   "bugs": {
-    "url": "https://github.com/tvf-restaurant/api-client/issues"
+    "url": "https://github.com/AkashBadhe/TVF/issues"
   },
-  "homepage": "https://github.com/tvf-restaurant/api-client#readme",
+  "homepage": "https://github.com/AkashBadhe/TVF#readme",
   "scripts": {
     "setup": "node setup.js",
     "clean": "rimraf dist generated types.d.ts openapi.json generated-client",
