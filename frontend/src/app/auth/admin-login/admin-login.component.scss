@@ -4,19 +4,19 @@
   align-items: center;
   min-height: calc(100vh - 64px);
   padding: 2rem;
-  background: linear-gradient(135deg, var(--app-black) 0%, var(--app-navy) 100%);
+  background: linear-gradient(135deg, #212121 0%, #3f51b5 100%);
 }
 
 .auth-card {
   width: 100%;
   max-width: 400px;
   padding: 2rem;
-  box-shadow: 0 8px 25px var(--app-shadow-heavy);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   border-radius: 12px;
-  background-color: var(--app-white);
+  background-color: white;
   
   &.admin-card {
-    border-top: 4px solid var(--app-gold);
+    border-top: 4px solid #ff4081;
   }
 }
 
@@ -29,7 +29,7 @@
     font-size: 3rem;
     width: 3rem;
     height: 3rem;
-    color: var(--app-gold);
+    color: #ff4081;
   }
 }
 
@@ -44,11 +44,11 @@
   margin-bottom: 1rem;
   font-size: 1rem;
   border-radius: 8px;
-  background-color: var(--app-gold);
-  color: var(--app-black);
+  background-color: #ff4081;
+  color: white;
   
   &:hover:not(:disabled) {
-    background-color: var(--app-gold-dark);
+    background-color: #e91e63;
   }
 }
 
@@ -74,11 +74,11 @@ mat-card-header {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: var(--app-navy);
+    color: #3f51b5;
   }
   
   mat-card-subtitle {
-    color: var(--app-text-muted);
+    color: #666;
     font-size: 0.9rem;
   }
 }

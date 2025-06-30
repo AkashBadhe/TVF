@@ -22,7 +22,7 @@
 
   p {
     margin: 1rem 0;
-    color: var(--primary-text);
+    color: rgba(0, 0, 0, 0.87);
   }
 }
 
@@ -34,12 +34,12 @@
 
   h1 {
     margin: 0;
-    color: var(--primary-color);
+    color: #3f51b5;
   }
 
   mat-icon-button {
     mat-icon {
-      color: var(--primary-color);
+      color: #3f51b5;
     }
   }
 }
@@ -107,7 +107,7 @@
 
   mat-card-header {
     mat-card-title {
-      color: var(--primary-text);
+      color: rgba(0, 0, 0, 0.87);
       font-size: 1.75rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
@@ -122,7 +122,7 @@
       .price {
         font-size: 1.5rem;
         font-weight: 600;
-        color: var(--accent-color);
+        color: #ff4081;
       }
 
       .availability {
@@ -146,7 +146,7 @@
   margin-bottom: 1.5rem;
 
   p {
-    color: var(--secondary-text);
+    color: rgba(0, 0, 0, 0.6);
     line-height: 1.6;
     font-size: 1rem;
   }
@@ -163,13 +163,13 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--secondary-text);
+  color: rgba(0, 0, 0, 0.6);
 
   mat-icon {
     font-size: 20px;
     width: 20px;
     height: 20px;
-    color: var(--primary-color);
+    color: #3f51b5;
   }
 }
 
@@ -225,18 +225,18 @@
   padding: 0.75rem;
   border-radius: 8px;
   background-color: var(--background-color);
-  border: 1px solid var(--divider-color);
+  border: 1px solid rgba(0, 0, 0, 0.12);
 
   .label {
     font-size: 0.875rem;
-    color: var(--secondary-text);
+    color: rgba(0, 0, 0, 0.6);
     margin-bottom: 0.25rem;
   }
 
   .value {
     font-size: 1.125rem;
     font-weight: 600;
-    color: var(--primary-text);
+    color: rgba(0, 0, 0, 0.87);
   }
 }
 
@@ -244,7 +244,7 @@
   margin: 1.5rem 0;
 
   h3 {
-    color: var(--primary-color);
+    color: #3f51b5;
     margin-bottom: 1rem;
   }
 
@@ -252,7 +252,7 @@
     margin-bottom: 1.5rem;
 
     h4 {
-      color: var(--primary-text);
+      color: rgba(0, 0, 0, 0.87);
       margin-bottom: 0.75rem;
       font-size: 1rem;
 
@@ -271,7 +271,7 @@
 
       mat-checkbox {
         ::ng-deep .mat-checkbox-label {
-          color: var(--secondary-text);
+          color: rgba(0, 0, 0, 0.6);
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -279,7 +279,7 @@
         }
 
         .option-price {
-          color: var(--accent-color);
+          color: #ff4081;
           font-weight: 500;
         }
       }
@@ -303,13 +303,13 @@
   padding: 1rem;
   background-color: var(--background-color);
   border-radius: 8px;
-  border: 1px solid var(--divider-color);
+  border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .quantity-controls {
   h4 {
     margin: 0 0 0.5rem 0;
-    color: var(--primary-text);
+    color: rgba(0, 0, 0, 0.87);
   }
 
   .quantity-selector {
@@ -320,14 +320,14 @@
     .quantity-display {
       font-size: 1.25rem;
       font-weight: 600;
-      color: var(--primary-text);
+      color: rgba(0, 0, 0, 0.87);
       min-width: 2rem;
       text-align: center;
     }
 
     button {
       mat-icon {
-        color: var(--primary-color);
+        color: #3f51b5;
       }
     }
   }
@@ -344,13 +344,13 @@
 
     .total-label {
       font-size: 1rem;
-      color: var(--secondary-text);
+      color: rgba(0, 0, 0, 0.6);
     }
 
     .total-amount {
       font-size: 1.75rem;
       font-weight: 600;
-      color: var(--accent-color);
+      color: #ff4081;
     }
   }
 }

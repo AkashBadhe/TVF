@@ -23,7 +23,7 @@
 
   p {
     margin: 1rem 0;
-    color: var(--primary-text);
+    color: rgba(0, 0, 0, 0.87);
   }
 }
 
@@ -32,19 +32,19 @@
   margin-bottom: 2rem;
 
   h1 {
-    color: var(--primary-color);
+    color: #3f51b5;
     margin-bottom: 0.5rem;
   }
 
   p {
-    color: var(--secondary-text);
+    color: rgba(0, 0, 0, 0.6);
     font-size: 1.1rem;
   }
 }
 
 .filters-section {
   background: white;
-  border: 1px solid var(--divider-color);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
@@ -52,12 +52,12 @@
 
   h3 {
     margin: 0 0 1.25rem 0;
-    color: var(--primary-color);
+    color: #3f51b5;
     font-size: 1.1rem;
     font-weight: 600;
     text-align: left;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--divider-color);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -139,7 +139,7 @@
     
     .mat-mdc-option {
       background-color: transparent !important;
-      color: var(--primary-text) !important;
+      color: rgba(0, 0, 0, 0.87) !important;
       
       &:hover {
         background-color: rgba(0, 0, 0, 0.04) !important;
@@ -147,7 +147,7 @@
       
       &.mdc-list-item--selected {
         background-color: rgba(63, 81, 181, 0.12) !important;
-        color: var(--primary-color) !important;
+        color: #3f51b5 !important;
       }
     }
   }
@@ -184,7 +184,7 @@
       }
       
       .mat-mdc-checkbox-label {
-        color: var(--primary-text) !important;
+        color: rgba(0, 0, 0, 0.87) !important;
         margin-left: 8px;
         line-height: 1.2;
         font-size: 0.95rem;
@@ -195,13 +195,13 @@
       
       // Fix checkbox colors - keep normal checkbox styling
       .mdc-checkbox__background {
-        border-color: var(--primary-color) !important;
+        border-color: #3f51b5 !important;
         background-color: white !important;
       }
       
       .mdc-checkbox--checked .mdc-checkbox__background {
-        background-color: var(--primary-color) !important;
-        border-color: var(--primary-color) !important;
+        background-color: #3f51b5 !important;
+        border-color: #3f51b5 !important;
       }
       
       // Remove any ripple backgrounds
@@ -220,7 +220,7 @@
   display: flex;
   justify-content: flex-end;
   padding-top: 1rem;
-  border-top: 1px solid var(--divider-color);
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin-top: 1rem;
   
   button {
@@ -241,7 +241,7 @@
   padding: 0 0.25rem;
   
   p {
-    color: var(--secondary-text);
+    color: rgba(0, 0, 0, 0.6);
     font-weight: 500;
     margin: 0;
     font-size: 0.95rem;
@@ -393,7 +393,7 @@
 
 mat-card-header {
   .mat-card-title {
-    color: var(--primary-text) !important;
+    color: rgba(0, 0, 0, 0.87) !important;
     font-weight: 600 !important;
     font-size: 1.1rem !important;
     line-height: 1.3 !important;
@@ -401,7 +401,7 @@ mat-card-header {
   }
 
   .mat-card-subtitle {
-    color: var(--accent-color) !important;
+    color: #ff4081 !important;
     font-weight: 500 !important;
     font-size: 0.9rem !important;
     margin-bottom: 0 !important;
@@ -409,7 +409,7 @@ mat-card-header {
 }
 
 .item-description {
-  color: var(--secondary-text);
+  color: rgba(0, 0, 0, 0.6);
   line-height: 1.5;
   margin: 0.25rem 0 0.5rem 0;
   display: -webkit-box;
@@ -432,7 +432,7 @@ mat-card-header {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: var(--secondary-text);
+  color: rgba(0, 0, 0, 0.6);
   font-size: 0.9rem;
 
   mat-icon {
@@ -453,13 +453,13 @@ mat-card-header {
   align-items: center;
   margin: 0.5rem 0 0 0;
   padding-top: 0.75rem;
-  border-top: 1px solid var(--divider-color);
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .price {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--accent-color);
+  color: #ff4081;
 }
 
 .availability {
@@ -477,7 +477,7 @@ mat-card-actions {
   justify-content: space-between;
   gap: 0.75rem;
   padding: 1.25rem !important;
-  border-top: 1px solid var(--divider-color);
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin-top: auto;
 
   button {
@@ -496,7 +496,7 @@ mat-card-actions {
 .no-results {
   text-align: center;
   padding: 3rem;
-  color: var(--secondary-text);
+  color: rgba(0, 0, 0, 0.6);
 
   mat-icon {
     font-size: 64px;
@@ -508,7 +508,7 @@ mat-card-actions {
 
   h3 {
     margin-bottom: 0.5rem;
-    color: var(--primary-text);
+    color: rgba(0, 0, 0, 0.87);
   }
 
   p {
@@ -520,7 +520,7 @@ mat-card-actions {
   display: flex;
   justify-content: flex-end;
   padding-top: 1rem;
-  border-top: 1px solid var(--divider-color);
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin-top: 1rem;
   
   button {
@@ -547,7 +547,7 @@ mat-card-actions {
     
     &.mdc-list-item--selected {
       background-color: rgba(63, 81, 181, 0.12) !important;
-      color: var(--primary-color) !important;
+      color: #3f51b5 !important;
     }
   }
   
