@@ -1,0 +1,31 @@
+{
+  "name": "@tvf/types",
+  "version": "1.0.0",
+  "description": "Auto-generated TypeScript types for TVF Restaurant API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "setup": "node setup.js",
+    "clean": "rimraf dist generated types.d.ts openapi.json",
+    "fetch-schema": "curl -o openapi.json http://localhost:3000/api/docs-json",
+    "generate": "pnpx openapi-typescript openapi.json --output types.d.ts",
+    "build": "pnpm run clean && pnpm run fetch-schema && pnpm run generate && pnpm run copy-types",
+    "copy-types": "node scripts/copy-types.js",
+    "integrate": "pnpm run build && node scripts/integrate-frontend.js",
+    "watch": "nodemon --watch ../backend/src --ext ts,js --exec \"pnpm run integrate\"",
+    "dev": "pnpm run integrate && pnpm run watch",
+    "simple": "node scripts/generate-simple.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^6.7.3",
+    "nodemon": "^3.0.2",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}

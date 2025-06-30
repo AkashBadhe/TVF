@@ -1,3 +1,8 @@
+// Auto-generated types from backend API
+export * from '../generated-types';
+
+// Manual types (to be gradually replaced with generated ones)
+
 // User Models
 export interface User {
   _id: string;

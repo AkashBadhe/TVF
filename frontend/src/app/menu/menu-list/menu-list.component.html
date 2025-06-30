@@ -7,7 +7,7 @@
 
   <!-- Error State -->
   <div *ngIf="error()" class="error-container">
-    <mat-icon color="warn">error</mat-icon>
+    <mat-icon style="font-size: 48px; color: #f44336;">warning</mat-icon>
     <p>{{ error() }}</p>
     <button mat-button color="primary" (click)="reloadMenuData()">
       <mat-icon>refresh</mat-icon>
@@ -28,7 +28,7 @@
       <h3>Filter Options</h3>
       
       <div class="filters-grid">
-        <!-- Search -->
+          <!-- Search -->
         <mat-form-field appearance="outline" class="filter-field">
           <mat-label>Search menu items</mat-label>
           <input matInput 
@@ -57,7 +57,14 @@
                       (valueChange)="selectedSpiceLevel.set($event)">
             <mat-option value="">Any Level</mat-option>
             <mat-option *ngFor="let level of spiceLevels" [value]="level">
-              {{ level | titlecase }} {{ getSpiceLevelIcon(level) }}
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span *ngIf="getSpiceLevelIcon(level)" 
+                      class="spice-icon" 
+                      [style.color]="getSpiceLevelColor(level)">
+                  {{ getSpiceLevelIcon(level) }}
+                </span>
+                <span>{{ level | titlecase }}</span>
+              </div>
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -98,27 +105,32 @@
       <mat-card *ngFor="let item of filteredMenuItems()" class="menu-item-card">
         <!-- Item Image -->
         <div class="item-image-container">
+          <div class="placeholder-image" *ngIf="!item.image">
+            <mat-icon style="font-size: 48px;">restaurant</mat-icon>
+            <span>{{ item.name }}</span>
+          </div>
           <img mat-card-image 
-               [src]="item.image || '/assets/images/placeholder-food.jpg'" 
+               *ngIf="item?.image"
+               [src]="item?.image?.[0]" 
                [alt]="item.name"
                class="item-image">
-          
+
           <!-- Dietary Icons -->
           <div class="dietary-badges">
-            <mat-chip-set>
-              <mat-chip *ngIf="item.isVegetarian" class="vegetarian-chip">
-                <mat-icon>eco</mat-icon>
-                Vegetarian
-              </mat-chip>
-              <mat-chip *ngIf="item.isVegan" class="vegan-chip">
-                <mat-icon>local_florist</mat-icon>
-                Vegan
-              </mat-chip>
-              <mat-chip *ngIf="item.isGlutenFree" class="gluten-free-chip">
-                <mat-icon>grain</mat-icon>
-                Gluten-Free
-              </mat-chip>
-            </mat-chip-set>
+            <div class="badge-container">
+              <span *ngIf="item.isVegetarian" class="dietary-badge vegetarian-badge">
+                <mat-icon class="badge-icon">eco</mat-icon>
+                <span class="badge-text">Veg</span>
+              </span>
+              <span *ngIf="item.isVegan" class="dietary-badge vegan-badge">
+                <mat-icon class="badge-icon">nature</mat-icon>
+                <span class="badge-text">Vegan</span>
+              </span>
+              <span *ngIf="item.isGlutenFree" class="dietary-badge gluten-free-badge">
+                <mat-icon class="badge-icon">check_circle</mat-icon>
+                <span class="badge-text">GF</span>
+              </span>
+            </div>
           </div>
         </div>
 
@@ -139,15 +151,17 @@
               <mat-icon>schedule</mat-icon>
               <span>{{ item.preparationTime }} mins</span>
             </div>
-            <div class="detail-item" *ngIf="item.spiceLevel !== 'none'">
-              <span>{{ getSpiceLevelIcon(item.spiceLevel) }}</span>
+            <div class="detail-item" *ngIf="item.spiceLevel && item.spiceLevel !== 'none'">
+              <span class="spice-icon" [style.color]="getSpiceLevelColor(item.spiceLevel)">
+                {{ getSpiceLevelIcon(item.spiceLevel) }}
+              </span>
               <span>{{ item.spiceLevel | titlecase }}</span>
             </div>
           </div>
 
           <!-- Price -->
           <div class="price-container">
-            <span class="price">${{ item.price | number:'1.2-2' }}</span>
+            <span class="price">₹{{ item.price | number:'1.0-0' }}</span>
             <span class="availability" [class.unavailable]="!item.isAvailable">
               {{ item.isAvailable ? 'Available' : 'Unavailable' }}
             </span>
@@ -164,7 +178,7 @@
                   color="primary" 
                   [disabled]="!item.isAvailable"
                   (click)="addToCart(item)">
-            <mat-icon>add_shopping_cart</mat-icon>
+            <mat-icon>shopping_cart</mat-icon>
             Add to Cart
           </button>
         </mat-card-actions>
@@ -173,7 +187,7 @@
 
     <!-- No Results -->
     <div *ngIf="filteredMenuItems().length === 0" class="no-results">
-      <mat-icon>restaurant_menu</mat-icon>
+      <mat-icon style="font-size: 64px;">assignment</mat-icon>
       <h3>No menu items found</h3>
       <p>Try adjusting your filters or search terms</p>
       <button mat-button color="primary" (click)="clearFilters()">

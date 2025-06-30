@@ -202,11 +202,21 @@ export class MenuListComponent implements OnInit {
   getSpiceLevelIcon(level: string): string {
     switch (level) {
       case 'none': return '';
-      case 'mild': return '🌶️';
-      case 'medium': return '🌶️🌶️';
-      case 'hot': return '🌶️🌶️🌶️';
-      case 'extra-hot': return '🌶️🌶️🌶️🌶️';
+      case 'mild': return '●'; // Single dot for mild
+      case 'medium': return '●●'; // Double dot for medium
+      case 'hot': return '●●●'; // Triple dot for hot
+      case 'extra-hot': return '●●●●'; // Quad dot for extra hot
       default: return '';
+    }
+  }
+
+  getSpiceLevelColor(level: string): string {
+    switch (level) {
+      case 'mild': return '#4caf50'; // Green for mild
+      case 'medium': return '#ff9800'; // Orange for medium
+      case 'hot': return '#f44336'; // Red for hot
+      case 'extra-hot': return '#d32f2f'; // Dark red for extra hot
+      default: return '#666'; // Default gray
     }
   }
 }
