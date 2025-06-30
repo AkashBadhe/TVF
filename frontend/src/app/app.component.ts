@@ -54,9 +54,11 @@ export class AppComponent implements OnInit {
 
   private loadCartItemCount() {
     this.cartService.getCart().subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.cartItemCount = response.data.items.reduce((total, item) => total + item.quantity, 0);
+      next: (response: any) => {
+        if (response.success && response.data && response.data.items) {
+          this.cartItemCount = response.data.items.reduce((total: number, item: any) => total + item.quantity, 0);
+        } else {
+          this.cartItemCount = 0;
         }
       },
       error: () => {

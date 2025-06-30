@@ -97,36 +97,43 @@ export {
   fs.writeFileSync(path.join('dist', 'client.esm.js'), clientIndex);
   fs.writeFileSync(path.join('dist', 'client.d.ts'), clientIndex);
 
-  // Copy generated files to dist
-  console.log('📋 Copying generated files...');
+  // Copy and compile generated files to dist
+  console.log('📋 Copying and compiling generated files...');
   
   if (fs.existsSync('types.d.ts')) {
     fs.copyFileSync('types.d.ts', path.join('dist', 'types.generated.d.ts'));
   }
 
   if (fs.existsSync('generated-client')) {
-    // Windows-compatible recursive copy
-    const copyRecursiveSync = (src, dest) => {
-      if (fs.statSync(src).isDirectory()) {
-        if (!fs.existsSync(dest)) {
-          fs.mkdirSync(dest, { recursive: true });
-        }
-        const entries = fs.readdirSync(src, { withFileTypes: true });
-        for (const entry of entries) {
-          const srcPath = path.join(src, entry.name);
-          const destPath = path.join(dest, entry.name);
-          if (entry.isDirectory()) {
-            copyRecursiveSync(srcPath, destPath);
-          } else {
-            fs.copyFileSync(srcPath, destPath);
+    // First, compile the TypeScript client to JavaScript
+    console.log('🔧 Compiling TypeScript client...');
+    try {
+      execSync('npx tsc -p generated-client/tsconfig.json --outDir dist/generated-client', { stdio: 'inherit' });
+    } catch (error) {
+      console.log('⚠️  TypeScript compilation failed, copying raw files...');
+      // Fallback: Windows-compatible recursive copy
+      const copyRecursiveSync = (src, dest) => {
+        if (fs.statSync(src).isDirectory()) {
+          if (!fs.existsSync(dest)) {
+            fs.mkdirSync(dest, { recursive: true });
           }
+          const entries = fs.readdirSync(src, { withFileTypes: true });
+          for (const entry of entries) {
+            const srcPath = path.join(src, entry.name);
+            const destPath = path.join(dest, entry.name);
+            if (entry.isDirectory()) {
+              copyRecursiveSync(srcPath, destPath);
+            } else {
+              fs.copyFileSync(srcPath, destPath);
+            }
+          }
+        } else {
+          fs.copyFileSync(src, dest);
         }
-      } else {
-        fs.copyFileSync(src, dest);
-      }
-    };
-    
-    copyRecursiveSync('generated-client', path.join('dist', 'generated-client'));
+      };
+      
+      copyRecursiveSync('generated-client', path.join('dist', 'generated-client'));
+    }
   }
 
   // Create CommonJS versions using simple transformations

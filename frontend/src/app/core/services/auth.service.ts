@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, from } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { 
   AuthenticationService,
   OpenAPI,
-  type LoginRequest,
-  type RegisterRequest,
-  type ApiResponse
+  type LoginDto,
+  type RegisterDto
 } from '@tvf/api-client';
+import { User, AuthResponse } from '../../shared/models';
 
 // Configure the API client
 OpenAPI.BASE = environment.apiUrl;
@@ -20,17 +19,19 @@ OpenAPI.BASE = environment.apiUrl;
 export class AuthService {
   private readonly TOKEN_KEY = 'token';
   private readonly USER_KEY = 'user';
-  private readonly apiUrl = environment.apiUrl;
 
   private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {
+  constructor(private router: Router) {
     // Clear any corrupted localStorage data on initialization
     this.clearCorruptedStorage();
+    
+    // Set up authentication token for API client
+    const token = this.getToken();
+    if (token) {
+      OpenAPI.TOKEN = token;
+    }
   }
 
   private clearCorruptedStorage(): void {
@@ -64,49 +65,47 @@ export class AuthService {
     }
   }
 
-  register(data: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, data)
-      .pipe(
-        tap(response => {
-          if (response.success) {
-            // Set role as customer for registration
-            const customerWithRole = { ...response.data.customer, role: 'customer' as const };
-            this.setSession({ token: response.data.token, customer: customerWithRole });
-          }
-        })
-      );
+  register(data: RegisterDto): Observable<any> {
+    return from(AuthenticationService.authControllerRegister(data)).pipe(
+      tap(response => {
+        if (response) {
+          // Set role as customer for registration
+          const customerWithRole = { ...response as any, role: 'customer' as const };
+          this.setSession({ token: (response as any).token, customer: customerWithRole });
+        }
+      })
+    );
   }
 
-  login(data: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, data)
-      .pipe(
-        tap(response => {
-          if (response.success) {
-            // Set role as customer for regular login
-            const customerWithRole = { ...response.data.customer, role: 'customer' as const };
-            this.setSession({ token: response.data.token, customer: customerWithRole });
-          }
-        })
-      );
+  login(data: LoginDto): Observable<any> {
+    return from(AuthenticationService.authControllerLogin(data)).pipe(
+      tap(response => {
+        if (response) {
+          // Set role as customer for regular login
+          const customerWithRole = { ...response as any, role: 'customer' as const };
+          this.setSession({ token: (response as any).token, customer: customerWithRole });
+        }
+      })
+    );
   }
 
-  adminLogin(data: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/admin-login`, data)
-      .pipe(
-        tap(response => {
-          if (response.success) {
-            // Set role as admin for admin login
-            const adminWithRole = { ...response.data.customer, role: 'admin' as const };
-            this.setSession({ token: response.data.token, customer: adminWithRole });
-          }
-        })
-      );
+  adminLogin(data: LoginDto): Observable<any> {
+    return from(AuthenticationService.authControllerAdminLogin(data)).pipe(
+      tap(response => {
+        if (response) {
+          // Set role as admin for admin login
+          const adminWithRole = { ...response as any, role: 'admin' as const };
+          this.setSession({ token: (response as any).token, customer: adminWithRole });
+        }
+      })
+    );
   }
 
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
     this.currentUserSubject.next(null);
+    OpenAPI.TOKEN = undefined; // Clear API client token
     this.router.navigate(['/']);
   }
 
@@ -136,17 +135,17 @@ export class AuthService {
     localStorage.setItem(this.TOKEN_KEY, authData.token);
     localStorage.setItem(this.USER_KEY, JSON.stringify(authData.customer));
     this.currentUserSubject.next(authData.customer);
+    OpenAPI.TOKEN = authData.token; // Set token in API client
   }
 
-  refreshUserData(): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/auth/profile`)
-      .pipe(
-        tap(response => {
-          if (response.success) {
-            localStorage.setItem(this.USER_KEY, JSON.stringify(response.data));
-            this.currentUserSubject.next(response.data);
-          }
-        })
-      );
+  refreshUserData(): Observable<any> {
+    return from(AuthenticationService.authControllerGetProfile()).pipe(
+      tap(response => {
+        if (response) {
+          localStorage.setItem(this.USER_KEY, JSON.stringify(response));
+          this.currentUserSubject.next(response as User);
+        }
+      })
+    );
   }
 }

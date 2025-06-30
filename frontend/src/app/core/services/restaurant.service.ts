@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Observable, from } from 'rxjs';
+import { 
+  RestaurantService as GeneratedRestaurantService,
+  type CreateRestaurantDto,
+  type UpdateRestaurantDto,
+  type RestaurantStatusDto,
+  type WeeklyHoursDto
+} from '@tvf/api-client';
 import {
   Restaurant,
   ApiResponse
@@ -11,40 +16,52 @@ import {
   providedIn: 'root'
 })
 export class RestaurantService {
-  private readonly apiUrl = `${environment.apiUrl}/restaurant`;
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
-  getRestaurantInfo(): Observable<ApiResponse<Restaurant>> {
-    return this.http.get<ApiResponse<Restaurant>>(this.apiUrl);
+  // Public Methods
+  getPublicInfo(): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerGetPublicInfo());
+  }
+
+  getContactInfo(): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerGetContactInfo());
+  }
+
+  getDeliveryInfo(): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerGetDeliveryInfo());
   }
 
   // Admin Methods
-  updateRestaurantInfo(data: Partial<Restaurant>): Observable<ApiResponse<Restaurant>> {
-    return this.http.put<ApiResponse<Restaurant>>(this.apiUrl, data);
+  getFullInfo(): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerGetFullInfo());
   }
 
-  updateBusinessHours(
-    businessHours: Restaurant['businessHours']
-  ): Observable<ApiResponse<Restaurant>> {
-    return this.http.put<ApiResponse<Restaurant>>(`${this.apiUrl}/business-hours`, {
-      businessHours
-    });
+  getSettings(): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerGetSettings());
   }
 
-  updateDeliverySettings(
-    deliverySettings: Restaurant['deliverySettings']
-  ): Observable<ApiResponse<Restaurant>> {
-    return this.http.put<ApiResponse<Restaurant>>(`${this.apiUrl}/delivery-settings`, {
-      deliverySettings
-    });
+  initialize(): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerInitialize());
   }
 
-  updateContactInfo(
-    contactInfo: Restaurant['contactInfo']
-  ): Observable<ApiResponse<Restaurant>> {
-    return this.http.put<ApiResponse<Restaurant>>(`${this.apiUrl}/contact-info`, {
-      contactInfo
-    });
+  create(data: CreateRestaurantDto): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerCreate(data));
+  }
+
+  update(data: UpdateRestaurantDto): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerUpdate(data));
+  }
+
+  updateStatus(status: RestaurantStatusDto): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerUpdateStatus(status));
+  }
+
+  updateBusinessHours(hours: WeeklyHoursDto): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerUpdateBusinessHours(hours));
+  }
+
+  updateDeliverySettings(): Observable<any> {
+    return from(GeneratedRestaurantService.restaurantControllerUpdateDeliverySettings());
   }
 }

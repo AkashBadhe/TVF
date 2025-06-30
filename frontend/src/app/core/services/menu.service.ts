@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Observable, from } from 'rxjs';
+import { 
+  MenuService as GeneratedMenuService,
+  type CreateMenuItemDto,
+  type UpdateMenuItemDto,
+  type CreateCategoryDto,
+  type UpdateCategoryDto
+} from '@tvf/api-client';
 import {
   MenuItem,
   Category,
@@ -14,80 +19,91 @@ import {
   providedIn: 'root'
 })
 export class MenuService {
-  private readonly apiUrl = `${environment.apiUrl}/menu`;
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   // Menu Items
   getMenuItems(
     page: number = 1,
     limit: number = 10,
     filters?: MenuFilters
-  ): Observable<ApiResponse<PaginatedResponse<MenuItem>>> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
+  ): Observable<any> {
+    const queryParams: any = {
+      page,
+      limit
+    };
 
     if (filters) {
-      if (filters.category) params = params.set('category', filters.category);
-      if (filters.isVegetarian !== undefined) params = params.set('isVegetarian', filters.isVegetarian.toString());
-      if (filters.isVegan !== undefined) params = params.set('isVegan', filters.isVegan.toString());
-      if (filters.isGlutenFree !== undefined) params = params.set('isGlutenFree', filters.isGlutenFree.toString());
-      if (filters.spiceLevel) params = params.set('spiceLevel', filters.spiceLevel);
-      if (filters.search) params = params.set('search', filters.search);
+      if (filters.category) queryParams.categoryId = filters.category;
+      if (filters.isVegetarian !== undefined) queryParams.isVegetarian = filters.isVegetarian;
+      if (filters.isVegan !== undefined) queryParams.isVegan = filters.isVegan;
+      if (filters.isGlutenFree !== undefined) queryParams.isGlutenFree = filters.isGlutenFree;
+      if (filters.search) queryParams.search = filters.search;
       if (filters.priceRange) {
-        params = params.set('minPrice', filters.priceRange.min.toString());
-        params = params.set('maxPrice', filters.priceRange.max.toString());
+        queryParams.minPrice = filters.priceRange.min;
+        queryParams.maxPrice = filters.priceRange.max;
       }
     }
 
-    return this.http.get<ApiResponse<PaginatedResponse<MenuItem>>>(this.apiUrl, { params });
+    return from(GeneratedMenuService.menuControllerGetMenuItems(queryParams));
   }
 
-  getMenuItem(id: string): Observable<ApiResponse<MenuItem>> {
-    return this.http.get<ApiResponse<MenuItem>>(`${this.apiUrl}/${id}`);
+  getMenuItem(id: string): Observable<any> {
+    return from(GeneratedMenuService.menuControllerGetMenuItemById(id));
   }
 
-  searchMenuItems(query: string): Observable<ApiResponse<MenuItem[]>> {
-    const params = new HttpParams().set('search', query);
-    return this.http.get<ApiResponse<MenuItem[]>>(`${this.apiUrl}/search`, { params });
+  searchMenuItems(query: string): Observable<any> {
+    return from(GeneratedMenuService.menuControllerSearchMenuItems(query));
+  }
+
+  getFeaturedItems(limit: number = 10): Observable<any> {
+    return from(GeneratedMenuService.menuControllerGetFeaturedItems(limit));
   }
 
   // Categories
-  getCategories(): Observable<ApiResponse<Category[]>> {
-    return this.http.get<ApiResponse<Category[]>>(`${this.apiUrl}/categories`);
+  getCategories(): Observable<any> {
+    return from(GeneratedMenuService.menuControllerGetCategories());
   }
 
-  getCategory(id: string): Observable<ApiResponse<Category>> {
-    return this.http.get<ApiResponse<Category>>(`${this.apiUrl}/categories/${id}`);
+  getCategory(id: string): Observable<any> {
+    return from(GeneratedMenuService.menuControllerGetCategoryById(id));
   }
 
-  getMenuItemsByCategory(categoryId: string): Observable<ApiResponse<MenuItem[]>> {
-    return this.http.get<ApiResponse<MenuItem[]>>(`${this.apiUrl}/categories/${categoryId}/items`);
+  getMenuItemsByCategory(categoryId: string): Observable<any> {
+    return from(GeneratedMenuService.menuControllerGetMenuItemsByCategory(categoryId));
   }
 
-  // Admin Methods
-  createMenuItem(menuItem: Partial<MenuItem>): Observable<ApiResponse<MenuItem>> {
-    return this.http.post<ApiResponse<MenuItem>>(this.apiUrl, menuItem);
+  // Admin Methods - Menu Items
+  createMenuItem(menuItem: CreateMenuItemDto): Observable<any> {
+    return from(GeneratedMenuService.menuControllerCreateMenuItem(menuItem));
   }
 
-  updateMenuItem(id: string, menuItem: Partial<MenuItem>): Observable<ApiResponse<MenuItem>> {
-    return this.http.put<ApiResponse<MenuItem>>(`${this.apiUrl}/${id}`, menuItem);
+  createMultipleMenuItems(menuItems: CreateMenuItemDto[]): Observable<any> {
+    return from(GeneratedMenuService.menuControllerCreateMultipleMenuItems({ items: menuItems }));
   }
 
-  deleteMenuItem(id: string): Observable<ApiResponse<void>> {
-    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
+  updateMenuItem(id: string, menuItem: UpdateMenuItemDto): Observable<any> {
+    return from(GeneratedMenuService.menuControllerUpdateMenuItem(id, menuItem));
   }
 
-  createCategory(category: Partial<Category>): Observable<ApiResponse<Category>> {
-    return this.http.post<ApiResponse<Category>>(`${this.apiUrl}/categories`, category);
+  deleteMenuItem(id: string): Observable<any> {
+    return from(GeneratedMenuService.menuControllerDeleteMenuItem(id));
   }
 
-  updateCategory(id: string, category: Partial<Category>): Observable<ApiResponse<Category>> {
-    return this.http.put<ApiResponse<Category>>(`${this.apiUrl}/categories/${id}`, category);
+  toggleMenuItemAvailability(id: string): Observable<any> {
+    return from(GeneratedMenuService.menuControllerToggleAvailability(id));
   }
 
-  deleteCategory(id: string): Observable<ApiResponse<void>> {
-    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/categories/${id}`);
+  // Admin Methods - Categories
+  createCategory(category: CreateCategoryDto): Observable<any> {
+    return from(GeneratedMenuService.menuControllerCreateCategory(category));
+  }
+
+  updateCategory(id: string, category: UpdateCategoryDto): Observable<any> {
+    return from(GeneratedMenuService.menuControllerUpdateCategory(id, category));
+  }
+
+  deleteCategory(id: string): Observable<any> {
+    return from(GeneratedMenuService.menuControllerDeleteCategory(id));
   }
 }

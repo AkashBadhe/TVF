@@ -14,7 +14,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MenuService } from '../../core/services/menu.service';
-import { CartService, AddToCartRequest } from '../../core/services/cart.service';
+import { CartService } from '../../core/services/cart.service';
+import { type AddToCartDto } from '@tvf/api-client';
 import { MenuItem } from '../../shared/models';
 
 @Component({
@@ -138,35 +139,9 @@ export class MenuItemDetailComponent implements OnInit {
     const item = this.menuItem();
     if (!item) return;
 
-    const customizations: Array<{
-      name: string;
-      selectedOptions: string[];
-      additionalPrice: number;
-    }> = [];
-
-    this.selectedCustomizations().forEach((selectedOptions, customizationName) => {
-      const customization = item.customizations?.find(c => c.name === customizationName);
-      if (customization && selectedOptions.length > 0) {
-        let additionalPrice = 0;
-        selectedOptions.forEach(optionName => {
-          const option = customization.options.find(o => o.name === optionName);
-          if (option) {
-            additionalPrice += option.price;
-          }
-        });
-
-        customizations.push({
-          name: customizationName,
-          selectedOptions,
-          additionalPrice
-        });
-      }
-    });
-
-    const cartItem: AddToCartRequest = {
-      menuItem: item.id,
+    const cartItem: AddToCartDto = {
+      menuItemId: item.id,
       quantity: this.quantity(),
-      customizations,
       specialInstructions: this.specialInstructions() || undefined
     };
 

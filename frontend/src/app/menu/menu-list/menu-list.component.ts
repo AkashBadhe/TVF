@@ -1,6 +1,6 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MenuService } from '../../core/services/menu.service';
-import { CartService, AddToCartRequest } from '../../core/services/cart.service';
+import { CartService } from '../../core/services/cart.service';
+import { type AddToCartDto } from '@tvf/api-client';
 import { MenuItem, Category, MenuFilters } from '../../shared/models';
 
 @Component({
@@ -22,7 +23,6 @@ import { MenuItem, Category, MenuFilters } from '../../shared/models';
   imports: [
     CommonModule,
     RouterModule,
-    RouterLink,
     FormsModule,
     MatCardModule,
     MatButtonModule,
@@ -155,10 +155,10 @@ export class MenuListComponent implements OnInit {
   }
 
   addToCart(menuItem: MenuItem): void {
-    const cartItem: AddToCartRequest = {
-      menuItem: menuItem.id,
+    const cartItem: AddToCartDto = {
+      menuItemId: menuItem.id,
       quantity: 1,
-      customizations: []
+      specialInstructions: ''
     };
 
     this.cartService.addToCart(cartItem).subscribe({

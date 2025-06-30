@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Observable, from } from 'rxjs';
+import { 
+  OrdersService as GeneratedOrdersService,
+  type CreateOrderDto,
+  type UpdateOrderStatusDto
+} from '@tvf/api-client';
 import {
   Order,
   ApiResponse,
@@ -9,70 +12,43 @@ import {
   OrderFilters
 } from '../../shared/models';
 
-export interface CreateOrderRequest {
-  deliveryAddress: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-    coordinates?: {
-      latitude: number;
-      longitude: number;
-    };
-  };
-  contactPhone: string;
-  paymentMethod: 'cash' | 'card' | 'online';
-  specialInstructions?: string;
-}
-
-export interface OrderStats {
-  totalOrders: number;
-  totalRevenue: number;
-  averageOrderValue: number;
-  ordersByStatus: Record<string, number>;
-  monthlyStats: Array<{
-    month: string;
-    orders: number;
-    revenue: number;
-  }>;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private readonly apiUrl = `${environment.apiUrl}/orders`;
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   // Customer Methods
-  createOrder(orderData: CreateOrderRequest): Observable<ApiResponse<Order>> {
-    return this.http.post<ApiResponse<Order>>(this.apiUrl, orderData);
+  createOrder(orderData: CreateOrderDto): Observable<any> {
+    return from(GeneratedOrdersService.ordersControllerPlaceOrder(orderData));
   }
 
   getMyOrders(
     page: number = 1,
     limit: number = 10,
-    status?: string
-  ): Observable<ApiResponse<PaginatedResponse<Order>>> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
+    status?: string,
+    orderType?: string,
+    paymentMethod?: string
+  ): Observable<any> {
+    const queryParams: any = { page, limit };
+    if (status) queryParams.status = status;
+    if (orderType) queryParams.orderType = orderType;
+    if (paymentMethod) queryParams.paymentMethod = paymentMethod;
 
-    if (status) {
-      params = params.set('status', status);
-    }
-
-    return this.http.get<ApiResponse<PaginatedResponse<Order>>>(`${this.apiUrl}/my-orders`, { params });
+    return from(GeneratedOrdersService.ordersControllerGetMyOrders(queryParams));
   }
 
-  getOrder(id: string): Observable<ApiResponse<Order>> {
-    return this.http.get<ApiResponse<Order>>(`${this.apiUrl}/${id}`);
+  getOrder(id: string): Observable<any> {
+    return from(GeneratedOrdersService.ordersControllerGetOrderById(id));
   }
 
-  cancelOrder(id: string): Observable<ApiResponse<Order>> {
-    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/${id}/cancel`, {});
+  trackOrder(orderNumber: string): Observable<any> {
+    return from(GeneratedOrdersService.ordersControllerTrackOrder(orderNumber));
+  }
+
+  cancelOrder(id: string): Observable<any> {
+    return from(GeneratedOrdersService.ordersControllerCancelOrder(id));
   }
 
   // Admin Methods
@@ -80,40 +56,30 @@ export class OrderService {
     page: number = 1,
     limit: number = 10,
     filters?: OrderFilters
-  ): Observable<ApiResponse<PaginatedResponse<Order>>> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
+  ): Observable<any> {
+    const queryParams: any = { page, limit };
 
     if (filters) {
-      if (filters.status) params = params.set('status', filters.status);
-      if (filters.customer) params = params.set('customer', filters.customer);
+      if (filters.status) queryParams.status = filters.status;
+      if (filters.customer) queryParams.customerEmail = filters.customer;
       if (filters.dateRange) {
-        params = params.set('startDate', filters.dateRange.start.toISOString());
-        params = params.set('endDate', filters.dateRange.end.toISOString());
+        queryParams.dateFrom = filters.dateRange.start.toISOString();
+        queryParams.dateTo = filters.dateRange.end.toISOString();
       }
     }
 
-    return this.http.get<ApiResponse<PaginatedResponse<Order>>>(`${this.apiUrl}/admin/all`, { params });
+    return from(GeneratedOrdersService.ordersControllerGetAllOrders(queryParams));
   }
 
-  updateOrderStatus(
-    id: string,
-    status: Order['status']
-  ): Observable<ApiResponse<Order>> {
-    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/admin/${id}/status`, { status });
+  updateOrderStatus(id: string, status: UpdateOrderStatusDto): Observable<any> {
+    return from(GeneratedOrdersService.ordersControllerUpdateOrderStatus(id, status));
   }
 
-  getOrderStats(): Observable<ApiResponse<OrderStats>> {
-    return this.http.get<ApiResponse<OrderStats>>(`${this.apiUrl}/admin/stats`);
+  getOrderStats(): Observable<any> {
+    return from(GeneratedOrdersService.ordersControllerGetOrderStats());
   }
 
-  assignDeliveryTime(
-    id: string,
-    estimatedDeliveryTime: Date
-  ): Observable<ApiResponse<Order>> {
-    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/admin/${id}/delivery-time`, {
-      estimatedDeliveryTime: estimatedDeliveryTime.toISOString()
-    });
+  adminCancelOrder(id: string): Observable<any> {
+    return from(GeneratedOrdersService.ordersControllerAdminCancelOrder(id));
   }
 }
