@@ -6,21 +6,27 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "setup": "node setup.js",
-    "clean": "rimraf dist generated types.d.ts openapi.json",
+    "clean": "rimraf dist generated types.d.ts openapi.json generated-client",
     "fetch-schema": "curl -o openapi.json http://localhost:3000/api/docs-json",
     "generate": "pnpx openapi-typescript openapi.json --output types.d.ts",
+    "generate-client": "pnpx openapi-typescript-codegen --input openapi.json --output ./generated-client --client axios",
     "build": "pnpm run clean && pnpm run fetch-schema && pnpm run generate && pnpm run copy-types",
+    "build-full": "pnpm run clean && pnpm run fetch-schema && pnpm run generate && pnpm run generate-client && pnpm run copy-types",
     "copy-types": "node scripts/copy-types.js",
     "integrate": "pnpm run build && node scripts/integrate-frontend.js",
+    "integrate-full": "pnpm run build-full && node scripts/integrate-frontend.js",
     "watch": "nodemon --watch ../backend/src --ext ts,js --exec \"pnpm run integrate\"",
     "dev": "pnpm run integrate && pnpm run watch",
-    "simple": "node scripts/generate-simple.js"
+    "dev-full": "pnpm run integrate-full && pnpm run watch",
+    "simple": "node scripts/generate-simple.js",
+    "with-client": "node scripts/generate-with-client.js"
   },
   "dependencies": {
     "axios": "^1.6.2"
   },
   "devDependencies": {
     "openapi-typescript": "^6.7.3",
+    "openapi-typescript-codegen": "^0.25.0",
     "nodemon": "^3.0.2",
     "rimraf": "^5.0.5",
     "typescript": "^5.3.3"
