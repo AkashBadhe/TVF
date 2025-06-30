@@ -1,0 +1,48 @@
+# Source files (don't include in published package)
+src/
+scripts/
+examples/
+generated-client/
+types.d.ts
+openapi.json
+
+# Development files
+.env
+.env.*
+*.log
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Build artifacts
+node_modules/
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git files
+.git/
+.gitignore
+
+# Documentation (except main README)
+docs/
+MIGRATION.md
+README.md
+
+# Test files
+test/
+tests/
+*.test.*
+*.spec.*
+__tests__/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/

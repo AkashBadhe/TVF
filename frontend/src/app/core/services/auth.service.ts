@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, from } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { 
-  User, 
-  Customer,
-  LoginRequest, 
-  RegisterRequest, 
-  AuthResponse,
-  ApiResponse 
-} from '../../shared/models';
+  AuthenticationService,
+  OpenAPI,
+  type LoginRequest,
+  type RegisterRequest,
+  type ApiResponse
+} from '@tvf/api-client';
+
+// Configure the API client
+OpenAPI.BASE = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root'
