@@ -28,24 +28,20 @@ export class MenuService {
     limit: number = 10,
     filters?: MenuFilters
   ): Observable<any> {
-    const queryParams: any = {
-      page,
-      limit
-    };
-
-    if (filters) {
-      if (filters.category) queryParams.categoryId = filters.category;
-      if (filters.isVegetarian !== undefined) queryParams.isVegetarian = filters.isVegetarian;
-      if (filters.isVegan !== undefined) queryParams.isVegan = filters.isVegan;
-      if (filters.isGlutenFree !== undefined) queryParams.isGlutenFree = filters.isGlutenFree;
-      if (filters.search) queryParams.search = filters.search;
-      if (filters.priceRange) {
-        queryParams.minPrice = filters.priceRange.min;
-        queryParams.maxPrice = filters.priceRange.max;
-      }
-    }
-
-    return from(GeneratedMenuService.menuControllerGetMenuItems(queryParams));
+    return from(GeneratedMenuService.menuControllerGetMenuItems(
+      filters?.search,           // search
+      filters?.category,         // categoryId  
+      filters?.isVegetarian,     // isVegetarian
+      filters?.isVegan,          // isVegan
+      filters?.isGlutenFree,     // isGlutenFree
+      undefined,                 // isSpicy
+      filters?.priceRange?.min,  // minPrice
+      filters?.priceRange?.max,  // maxPrice
+      undefined,                 // sortBy
+      undefined,                 // sortOrder
+      page,                      // page
+      limit                      // limit
+    ));
   }
 
   getMenuItem(id: string): Observable<any> {
